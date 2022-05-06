@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:onsiteclone/pages/receivedPage.dart';
 
-class MatPage extends StatelessWidget {
+class MatPage extends StatefulWidget {
   const MatPage({Key? key}) : super(key: key);
 
+  @override
+  State<MatPage> createState() => _MatPageState();
+}
+
+class _MatPageState extends State<MatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,14 +18,13 @@ class MatPage extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            InkWell(
-              onTap: () {
-                Navigator.of(context).push(
+            GestureDetector(
+              onTap: () => Navigator.push(
+                  context,
                   MaterialPageRoute(
-                    builder: (context) => ReceivedPage(),
-                  ),
-                );
-              },
+                      builder: (context) => ReceivedPage(
+                            selMat: '',
+                          ))),
               child: Container(
                   alignment: Alignment.center,
                   height: 50,

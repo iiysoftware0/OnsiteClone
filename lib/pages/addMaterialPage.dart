@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:onsiteclone/pages/materialLibrary.dart';
+
 import 'package:onsiteclone/pages/selectTrade.dart';
 
 class AddMatPage extends StatefulWidget {
-  const AddMatPage({Key? key}) : super(key: key);
+  const AddMatPage({Key? key, required String selMat}) : super(key: key);
 
   @override
   State<AddMatPage> createState() => _AddMatPageState();
@@ -12,18 +12,19 @@ class AddMatPage extends StatefulWidget {
 class _AddMatPageState extends State<AddMatPage> {
   bool _onClicked = false;
   List<String> items = ['bags', 'numbers', 'meter', 'kg', 'litre', 'ton'];
-  List<String> trades = [
-    'Civil',
-    'Electrical',
-    'Plumbing',
-    'Earth Work',
-    'Painting',
-    'Wood Work'
-  ];
+  String trade = '';
+  // List<String> trades = [
+  //   'Civil',
+  //   'Electrical',
+  //   'Plumbing',
+  //   'Earth Work',
+  //   'Painting',
+  //   'Wood Work'
+  // ];
   List<String> tile = [];
 
   String? selectedItem = 'bags';
-  String? selectedTrade = 'Civil';
+  //String? selectedTrade = 'Civil';
   String? value;
   final _textController = TextEditingController();
 
@@ -91,51 +92,55 @@ class _AddMatPageState extends State<AddMatPage> {
                           SizedBox(
                             height: 10,
                           ),
-                          // InkWell(
-                          //   onTap: () {
-                          //     Navigator.of(context).push(
-                          //       MaterialPageRoute(
-                          //         builder: (context) => SelectTrade(),
-                          //       ),
-                          //     );
-                          //   },
-                          //   child:
-                          //   Container(
-                          //     padding: EdgeInsets.all(10),
-                          //     alignment: Alignment.center,
-                          //     height: 50,
-                          //     //width: size.width * 0.95,
-                          //     decoration: BoxDecoration(
-                          //         borderRadius: BorderRadius.circular(5),
-                          //         border: Border.all(
-                          //             color: Colors.black, width: 0.8)),
-                          //     child: Text(
-                          //       "Trade",
-                          //       style: TextStyle(color: Colors.white),
-                          //     ),
-                          //   ),
-                          // ),
-                          Container(
-                            alignment: Alignment.center,
-                            width: size.width * 0.95,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                border: Border.all(
-                                    color: Colors.black, width: 0.8)),
-                            child: DropdownButton<String>(
-                                underline: Container(),
-                                value: selectedTrade,
-                                items: trades
-                                    .map((trade) => DropdownMenuItem<String>(
-                                        value: trade,
-                                        child: Text(
-                                          trade,
-                                        )))
-                                    .toList(),
-                                onChanged: (trade) => setState(
-                                      () => selectedTrade = trade,
-                                    )),
+                          InkWell(
+                            onTap: () async {
+                              final newTrade = await Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => SelectTrade(
+                                    trade: trade,
+                                  ),
+                                ),
+                              );
+                              setState(() {
+                                this.trade = newTrade;
+                              });
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(10),
+                              alignment: Alignment.center,
+                              height: 50,
+                              //width: size.width * 0.95,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  border: Border.all(
+                                      color: Colors.black, width: 0.8)),
+                              child: Text(
+                                trade,
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
                           ),
+                          // Container(
+                          //   alignment: Alignment.center,
+                          //   width: size.width * 0.95,
+                          //   decoration: BoxDecoration(
+                          //       borderRadius: BorderRadius.circular(5),
+                          //       border: Border.all(
+                          //           color: Colors.black, width: 0.8)),
+                          //   child: DropdownButton<String>(
+                          //       underline: Container(),
+                          //       value: selectedTrade,
+                          //       items: trades
+                          //           .map((trade) => DropdownMenuItem<String>(
+                          //               value: trade,
+                          //               child: Text(
+                          //                 trade,
+                          //               )))
+                          //           .toList(),
+                          //       onChanged: (trade) => setState(
+                          //             () => selectedTrade = trade,
+                          //           )),
+                          // ),
                           SizedBox(
                             height: 10,
                           ),
@@ -233,8 +238,13 @@ class _AddMatPageState extends State<AddMatPage> {
                     ],
                   ),
             Flexible(
-              child: ListView(
-                children: tile.map((element) => Text(element)).toList(),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+                child: ListView(
+                  children: tile.map((element) => Text(element)).toList(),
+                ),
               ),
             ),
             // Expanded(

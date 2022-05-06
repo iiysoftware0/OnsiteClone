@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class SelectTrade extends StatelessWidget {
-  const SelectTrade({Key? key}) : super(key: key);
+  const SelectTrade({Key? key, required String trade}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,9 @@ class SelectTrade extends StatelessWidget {
               itemCount: trades.length,
               itemBuilder: (BuildContext context, int index) {
                 return GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).pop(trades[index]);
+                  },
                   child: ListTile(
                     title: Text(
                       trades[index].toString(),

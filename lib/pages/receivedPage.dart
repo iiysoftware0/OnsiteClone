@@ -5,7 +5,7 @@ import 'package:onsiteclone/pages/addMaterialPage.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ReceivedPage extends StatefulWidget {
-  const ReceivedPage({Key? key}) : super(key: key);
+  const ReceivedPage({Key? key, required String selMat}) : super(key: key);
 
   @override
   State<ReceivedPage> createState() => _ReceivedPageState();
@@ -47,6 +47,8 @@ class _ReceivedPageState extends State<ReceivedPage> {
       _image = image as File;
     });
   }
+
+  String selMat = '';
 
   @override
   Widget build(BuildContext context) {
@@ -104,12 +106,15 @@ class _ReceivedPageState extends State<ReceivedPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 InkWell(
-                  onTap: () {
-                    Navigator.of(context).push(
+                  onTap: () async {
+                    final selectedMaterial = await Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => AddMatPage(),
+                        builder: (context) => AddMatPage(selMat: selMat),
                       ),
                     );
+                    setState(() {
+                      this.selMat = selectedMaterial;
+                    });
                   },
                   child: Container(
                     padding: EdgeInsets.all(10),
@@ -120,7 +125,7 @@ class _ReceivedPageState extends State<ReceivedPage> {
                         borderRadius: BorderRadius.circular(5),
                         border: Border.all(color: Colors.black, width: 0.8)),
                     child: Text(
-                      "Material",
+                      selMat,
                       style: TextStyle(color: Colors.white),
                     ),
                   ),

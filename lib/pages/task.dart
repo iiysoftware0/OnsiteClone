@@ -1,7 +1,26 @@
 import 'package:flutter/material.dart';
 
-class TaskPage extends StatelessWidget {
+class TaskPage extends StatefulWidget {
   const TaskPage({Key? key}) : super(key: key);
+
+  @override
+  State<TaskPage> createState() => _TaskPageState();
+}
+
+class _TaskPageState extends State<TaskPage> {
+  DateTime selectedDate = DateTime.now();
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -156,21 +175,26 @@ class TaskPage extends StatelessWidget {
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Container(
-          alignment: Alignment.center,
-          height: 50,
-          width: size.width * 0.9,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: Color(0xff121252),
-          ),
-          child: Text(
-            "+ ADD NEW TASK",
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
+      floatingActionButton: GestureDetector(
+        onTap: () {
+          _bottomSheet2(context);
+        },
+        child: Container(
+            alignment: Alignment.center,
+            height: 50,
+            width: size.width * 0.9,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: Color(0xff121252),
             ),
-          )),
+            child: Text(
+              "+ ADD NEW TASK",
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            )),
+      ),
     );
   }
 
@@ -274,5 +298,95 @@ class TaskPage extends StatelessWidget {
         style: TextStyle(color: Colors.white),
       ),
     );
+  }
+
+  _bottomSheet2(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext c) {
+          return Container(
+            //height: 350,
+            padding: EdgeInsets.all(10),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 10,
+                ),
+                TextField(
+                  decoration: InputDecoration(
+                      hintText: "Task Name", border: OutlineInputBorder()),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                InkWell(
+                  onTap: () {
+                    _selectDate(context);
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+                    alignment: Alignment.center,
+                    //height: 50,
+                    //width: size.width * 0.45,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(color: Colors.black, width: 0.8)),
+                    child: Row(
+                      children: [
+                        Text("Start Date"),
+                        Text(
+                          "${selectedDate.day}-${selectedDate.month}-${selectedDate.year}",
+                          style: TextStyle(
+                            color: Colors.black,
+                            //fontSize: 18.0,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                InkWell(
+                  onTap: () {
+                    _selectDate(context);
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+                    alignment: Alignment.center,
+                    //height: 50,
+                    //width: size.width * 0.45,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(color: Colors.black, width: 0.8)),
+                    child: Row(
+                      children: [
+                        Text("End Date"),
+                        Text(
+                          "${selectedDate.day}-${selectedDate.month}-${selectedDate.year}",
+                          style: TextStyle(
+                            color: Colors.black,
+                            //fontSize: 18.0,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                RaisedButton(
+                  color: Colors.pink,
+                  onPressed: () {},
+                  child: Text("SAVE TASK"),
+                ),
+              ],
+            ),
+          );
+        });
   }
 }
