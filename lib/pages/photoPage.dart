@@ -1,104 +1,45 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
 
-class PhotoPage extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
+
+class PhotoPage extends StatefulWidget {
   const PhotoPage({Key? key}) : super(key: key);
+
+  @override
+  State<PhotoPage> createState() => _PhotoPageState();
+}
+
+class _PhotoPageState extends State<PhotoPage> {
+  // File? _image;
+  // Future getImage() async {
+  //   final image = await ImagePicker().pickImage(source: ImageSource.camera);
+  //   setState(() {
+  //     _image = image as File;
+  //   });
+  // }
+
+  File? image;
+  Future pickImage(ImageSource source) async {
+    try {
+      final images = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (images == null) return;
+
+      final imageTemporary = File(images.path);
+      setState(() => this.image = imageTemporary);
+    } on PlatformException catch (e) {
+      print("Failed to pick image: $e");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xff121252),
-        toolbarHeight: 0.0,
-      ),
       backgroundColor: Colors.black,
       body: Column(
         children: [
-          Container(
-            padding: EdgeInsets.all(8),
-            alignment: Alignment.topCenter,
-            color: Color(0xff121252),
-            height: 110,
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.arrow_back,
-                          color: Colors.white,
-                        ),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        Container(
-                            padding: EdgeInsets.all(4),
-                            decoration: BoxDecoration(
-                                color: Colors.pink,
-                                shape: BoxShape.circle,
-                                border:
-                                    Border.all(color: Colors.grey, width: 0.8)),
-                            child: Text(
-                              "DP",
-                              style: TextStyle(
-                                fontSize: 25,
-                                color: Colors.white,
-                                //fontWeight: FontWeight.bold,
-                              ),
-                            )),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          "Demo Project",
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.notifications,
-                          color: Colors.white,
-                        ),
-                        Icon(
-                          Icons.more_vert,
-                          color: Colors.white,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  alignment: Alignment.center,
-                  height: 38,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: <Widget>[
-                      Icon(
-                        Icons.people,
-                        color: Colors.grey,
-                      ),
-                      itemText(text: "PAYMENT"),
-                      itemText(text: "ATTENDANCE"),
-                      itemText(text: "MATERIAL"),
-                      itemText(text: "TASK"),
-                      itemText(text: "PHOTO"),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: Column(
@@ -128,12 +69,27 @@ class PhotoPage extends StatelessWidget {
                   child: ListView(
                     scrollDirection: Axis.horizontal,
                     children: <Widget>[
+                      GestureDetector(
+                        onTap: () => pickImage(ImageSource.gallery),
+                        child: Container(
+                            width: 80,
+                            // child: Image.asset(image),
+                            margin: EdgeInsets.only(right: 20),
+                            decoration: BoxDecoration(
+                                color: Colors.grey[850],
+                                borderRadius: BorderRadius.circular(10)),
+                            child:
+                                Icon(Icons.add_a_photo, color: Colors.white)),
+                      ),
                       item(image: 'assets/1.jpg'),
                       item(image: 'assets/2.jpg'),
                       item(image: 'assets/3.jpg'),
                       item(image: 'assets/4.jpg'),
                       item(image: 'assets/5.jpg'),
                       item(image: 'assets/6.jpg'),
+                      image != null
+                          ? Image.file(image!)
+                          : Text("No image selected"),
                     ],
                   ),
                 ),

@@ -1,104 +1,46 @@
 import 'package:flutter/material.dart';
 
-class AttendancePage extends StatelessWidget {
+class AttendancePage extends StatefulWidget {
   const AttendancePage({Key? key}) : super(key: key);
+
+  @override
+  State<AttendancePage> createState() => _AttendancePageState();
+}
+
+class _AttendancePageState extends State<AttendancePage> {
+  DateTime _date = DateTime.now();
+
+  List<String> months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  List<String> days = [
+    "Mon",
+    "Tue",
+    "Wed",
+    "Thur",
+    "Fri",
+    "Sat",
+    "Sun",
+  ];
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xff121252),
-        toolbarHeight: 0.0,
-      ),
       backgroundColor: Colors.black,
       body: Column(
         children: [
-          Container(
-            padding: EdgeInsets.all(8),
-            alignment: Alignment.topCenter,
-            color: Color(0xff121252),
-            height: 110,
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.arrow_back,
-                          color: Colors.white,
-                        ),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        Container(
-                            padding: EdgeInsets.all(6),
-                            decoration: BoxDecoration(
-                                color: Colors.pink,
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                    color: Colors.black, width: 0.8)),
-                            child: Text(
-                              "DP",
-                              style: TextStyle(
-                                fontSize: 22,
-                                color: Colors.white,
-                                //fontWeight: FontWeight.bold,
-                              ),
-                            )),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          "Demo Project",
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.notifications,
-                          color: Colors.white,
-                        ),
-                        Icon(
-                          Icons.more_vert,
-                          color: Colors.white,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  alignment: Alignment.center,
-                  height: 38,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: <Widget>[
-                      Icon(
-                        Icons.people,
-                        color: Colors.grey,
-                      ),
-                      itemText(text: "PAYMENT"),
-                      itemText(text: "ATTENDANCE"),
-                      itemText(text: "MATERIAL"),
-                      itemText(text: "TASK"),
-                      itemText(text: "PHOTO"),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
           Container(
             padding: EdgeInsets.all(15),
             child: Row(
@@ -109,7 +51,7 @@ class AttendancePage extends StatelessWidget {
                   color: Colors.white,
                 ),
                 Text(
-                  "30 Apr, Sat",
+                  "${_date.day} ${months[_date.month - 1]}, ${days[_date.weekday - 1]}",
                   style: TextStyle(
                     fontSize: 20,
                     color: Colors.white,
@@ -251,6 +193,7 @@ class AttendancePage extends StatelessWidget {
                 ),
                 Row(
                   children: [
+                    //ChoiceChip(label: Text("Present"), selected: false),
                     Container(
                         padding: EdgeInsets.all(8),
                         alignment: Alignment.center,
