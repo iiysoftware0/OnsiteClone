@@ -420,21 +420,26 @@ class _AttendancePageState extends State<AttendancePage> {
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Container(
-          alignment: Alignment.center,
-          height: 50,
-          width: size.width * 0.9,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: Colors.grey[850],
-          ),
-          child: Text(
-            "+ Add Worker",
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
+      floatingActionButton: GestureDetector(
+        onTap: () {
+          _bottomSheet(context);
+        },
+        child: Container(
+            alignment: Alignment.center,
+            height: 50,
+            width: size.width * 0.9,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: Colors.grey[850],
             ),
-          )),
+            child: Text(
+              "+ Add Worker",
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            )),
+      ),
     );
   }
 
@@ -446,5 +451,59 @@ class _AttendancePageState extends State<AttendancePage> {
         style: TextStyle(color: Colors.grey),
       ),
     );
+  }
+
+  _bottomSheet(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext c) {
+          return Container(
+            padding: EdgeInsets.all(10),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 10,
+                ),
+                TextField(
+                  decoration: InputDecoration(
+                      hintText: "Select Worker", border: OutlineInputBorder()),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                TextField(
+                  decoration: InputDecoration(
+                      hintText: "Worker Type", border: OutlineInputBorder()),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                TextField(
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                      hintText: "Salary per Shift",
+                      border: OutlineInputBorder()),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                TextField(
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                      hintText: "Hours per Shift",
+                      border: OutlineInputBorder()),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                RaisedButton(
+                  color: Colors.pink,
+                  onPressed: () {},
+                  child: Text("SAVE"),
+                ),
+              ],
+            ),
+          );
+        });
   }
 }
